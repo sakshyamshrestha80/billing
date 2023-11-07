@@ -1,3 +1,11 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.label {
+    @apply text-black text-start w-full font-bold mt-3 my-2
+}
+
+.input {
+    @apply font-semibold text-black rounded-sm placeholder:text-sm outline-none p-3 w-full border border-black border-opacity-10
+}

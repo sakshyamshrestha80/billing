@@ -1,38 +1,59 @@
-import React from 'react'
-import { MdDeleteOutline } from "react-icons/md"
-import { AiFillEdit } from "react-icons/ai"
-const data = [
-    {
-        Sno: 1,
-        CategoryName: "category1",
-        Description: "category",
-        Status: "Active",
-        icon1: <MdDeleteOutline />,
-        icon2: <AiFillEdit />
+import React, { useEffect, useState } from 'react'
+
+import Modelproductcategory from './Modelproductcategory'
+import Tablerow from '../user/Tablerow'
+import Categorytable from './Categorytable'
 
 
-    },
-    {
-        Sno: 2,
-        CategoryName: "category2",
-        Description: "category2",
-        Status: "Active",
-        icon1: <MdDeleteOutline />,
-        icon2: <AiFillEdit />
+
+
+const Productcategory = (props) => {
+    const [productcat, setProductcat] = useState([])
+    const [inside, setInside] = useState(false)
+    const btnhandler = () => {
+        setInside(true)
+    }
+
+    const getdata = async () => {
+        try {
+            const isertdata = await fetch('http://localhost:8000/api/category/all',
+
+                {
+                    method: "GET",
+                    headers: {
+                        "auth_token": localStorage.getItem("token"),
+
+                    }
+
+                })
+
+            const data = await isertdata.json();
+            setProductcat(data.categories)
+            console.log(data)
+
+        }
+        catch {
+
+        }
+
 
 
     }
-
-]
-
-
-const Productcategory = () => {
+    useEffect(() => {
+        console.log("this is cdata")
+        getdata()
+    }, [])
     return (
         <div>
+            {
+                inside &&
+                <Modelproductcategory data={setInside} send={getdata} getcategory={setProductcat} />
+            }
             <div className='flex justify-between max-w-[900px] w-full mx-auto '>
                 <div className='font-bold text-lg text-black'>Category</div>
                 <div >
-                    <button className='bg-green-500 w-14 h-6 m-2  rounded-md text-white '> + ADD</button>
+                    <button className='bg-green-500 w-14 h-6 m-2  rounded-md text-white '
+                        onClick={btnhandler}> + ADD</button>
                 </div>
             </div>
             <table className='border max-w-[900px] w-full mx-auto shadow-lg'>
@@ -48,21 +69,11 @@ const Productcategory = () => {
                 <tbody>
 
                     {
-                        data.map((item) => {
+                        productcat.map((item, index) => {
                             return (
-                                <tr className='border'>
-                                    <td className='py-2 px-2 '>{item.Sno}</td>
-                                    <td>{item.CategoryName}</td>
-                                    <td>{item.Description}</td>
-                                    <td>{item.Status}</td>
-                                    <div className='flex gap-4 w-fit mx-auto py-2 '>
-                                        <td className='flex justify-center items-center bg-red-500 rounded-full h-6 w-6'>{item.icon1}</td>
-                                        <td className='flex justify-center items-center bg-yellow-300 rounded-full h-6 w-6'>{item.icon2}</td>
 
-                                    </div>
+                                <Categorytable getdata={getdata} index={index} item={item} />
 
-
-                                </tr>
 
 
                             )

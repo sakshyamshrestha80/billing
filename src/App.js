@@ -11,26 +11,36 @@ import Product from "./Components/products/Product"
 import Sales from "./Components/sales/Sales"
 import Activeorder from "./Components/activeorder/Activeorder"
 import { createContext, useState } from 'react';
+import { useLocation } from 'react-router-dom';
+import { Toaster } from 'react-hot-toast';
 
 export const Context = createContext();
 
 function App() {
-  const [openSidebar, setOpenSidebar] = useState(false)
+
+  const [opensidebar, setOpensidebar] = useState(false)
+
+  const location = useLocation()
+
   return (
-    <Context.Provider value={{ openSidebar: openSidebar, setOpenSidebar: setOpenSidebar }}>
+    <Context.Provider value={{ opensidebar: opensidebar, setopensidebar: setOpensidebar }}>
+
       <div className="App">
+        <Toaster />
         {/* <h1 className="text-3xl font-bold underline">
         Hello world!
       </h1> */}
-        {/* <Login /> */}
-        <div className=' flex '>
+
+        <div className=' flex overflow-hidden '>
           <div className=' '>
-            <Sidebar />
+            {location.pathname !== "/login" && <Sidebar />}
+            {/* <Sidebar /> */}
           </div>
           <div className='border  flex-1'>
             <div>
-              <Navbar />
-              <Dashboard />
+              {location.pathname !== "/login" && <Navbar />}
+              {/* <Navbar /> */}
+              {/* <Dashboard /> */}
             </div>
             <Routes>
               <Route path='/shop/dashboard' element={<Dashboard />} />
@@ -39,12 +49,14 @@ function App() {
               <Route path='/shop/products' element={<Product />} />
               <Route path='/shop/sales' element={<Sales />} />
               <Route path='/shop/activeorder' element={<Activeorder />} />
+              <Route path='/login' element={<Login />} />
 
             </Routes>
           </div>
         </div>
       </div>
     </Context.Provider>
+
 
   );
 }

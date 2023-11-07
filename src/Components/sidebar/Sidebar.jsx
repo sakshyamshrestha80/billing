@@ -9,6 +9,7 @@ import { Link } from 'react-router-dom'
 import { useLocation } from "react-router-dom"
 import { Context } from '../../App'
 import { useContext } from 'react'
+import { AiOutlineCloseCircle } from "react-icons/ai"
 
 
 const route = [
@@ -52,15 +53,27 @@ const route = [
 
 const Sidebar = () => {
     const location = useLocation();
-    console.log(location);
 
     const data = useContext(Context)
+
+    const btnhandler = () => {
+        data.setopensidebar(!data.opensidebar)
+    }
+
 
 
 
     return (
 
-        <div className={`w-96 border border-red-700 ${data.openSidebar ? "fixed left-0 top-0 h-full pt-20" : "hidden"} h-screen bg-slate-800 sm:flex flex-col justify-center items-center`}>
+        <div className={`${data.opensidebar ? "fixed left-0 top-0 " : "hidden"} pt-20 w-96  h-screen  bg-slate-800 sm:flex flex-col justify-center items-center`}>
+            <div>
+                <button className='  md:hidden absolute top-0 right-0  text-white text-2xl mt-2 pr-2' onClick={btnhandler}>
+                    <AiOutlineCloseCircle />
+
+                </button>
+
+            </div>
+
 
             {
                 route.map((item, index) => {
